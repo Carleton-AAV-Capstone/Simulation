@@ -3,6 +3,8 @@ FROM carla-ros-bridge:foxy
 RUN /bin/bash -c "python3 -m pip install --force-reinstall 'simple-pid==1.0.1'"
 RUN /bin/bash -c "python3 -m pip install --force-reinstall 'matplotlib'"
 
+COPY ./camera.py /opt/carla-ros-bridge/install/carla_ros_bridge/lib/python3.8/site-packages/carla_ros_bridge/camera.py
+
 RUN mkdir -p /opt/simulation
 WORKDIR /opt/simulation
 
