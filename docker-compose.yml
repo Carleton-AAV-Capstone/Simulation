@@ -22,7 +22,9 @@ services:
     stdin_open: true
     tty: true
   carla:
-    image: carlasim/carla:0.9.13
+    build:
+      context: .
+      dockerfile: carla_setup.Dockerfile
     command: /bin/bash ./CarlaUE4.sh -quality-level=Low -RenderOffScreen
     environment:
       - DISPLAY=$DISPLAY
