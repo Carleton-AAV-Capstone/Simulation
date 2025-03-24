@@ -2,14 +2,15 @@ import carla
 
 def main():
     # Connect to client
-    client = carla.Client('127.0.0.1', 2000)
+    client = carla.Client('localhost', 2000)
     client.set_timeout(2.0)
 
-    # Get World and Actors
+    # Get World and Actor
     world = client.get_world()
+    actors = world.get_actors()
 
     # Get ego vehicle
-    vehicle = world.get_blueprint_library().find('vehicle.micro.microlino') 
+    vehicle = [actor for actor in actors if 'vehicle.micro.microlino' in actor.type_id][0]
 
     # Create Wheels Physics Control
     front_left_wheel  = carla.WheelPhysicsControl(tire_friction=2.0, damping_rate=1.5, max_steer_angle=20.0, long_stiff_value=1000)
