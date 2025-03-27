@@ -26,6 +26,18 @@ def generate_launch_description():
             name='control_id',
             default_value='control'
         ),
+        Node(
+            package='test_nodes',
+            namespace='test',
+            executable='compressed_camera',
+            name='compressed_camera'
+        ),
+        Node(
+            package='test_nodes',
+            namespace='test',
+            executable='ackermann_control',
+            name='ackermann_control'
+        ),
         launch.actions.IncludeLaunchDescription(
             launch.launch_description_sources.PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory(

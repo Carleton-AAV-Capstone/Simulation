@@ -21,7 +21,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'compressed_camera = test_nodes.compressed_camera:main',      
+            'compressed_camera = test_nodes.compressed_images:main',      
+            'ackermann_control = test_nodes.publish_ackermann_control:main',
         ],
     },
 )
