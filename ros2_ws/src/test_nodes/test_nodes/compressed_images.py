@@ -3,12 +3,14 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
+import numpy as np
 
 class CompressedCamera(Node):
+
     def __init__(self):
         super().__init__('compressed_camera')
         self.bridge = CvBridge()
-        self.front_right_camera_publisher = self.create_publisher(Image, '/compressed/rgb_front_right/image', 15)
+        self.front_right_camera_publisher = self.create_publisher(Image, '/compressed/rgb_front_right/image', 10)
         self.front_right_camera_subscriber = self.create_subscription(
                 Image,
                 '/carla/ego_vehicle/rgb_front_right/image',
@@ -27,11 +29,15 @@ class CompressedCamera(Node):
                 self.get_logger().error("Failed to encode image to JPEG format")
                 return
 
-            # Manually create a compressed ROS Image message
+            # Create a new ROS Image message
             compressed_msg = Image()
-            compressed_msg.header = img_msg.header
-            compressed_msg.data = encoded_img.tobytes()  # Convert to raw bytes
-            compressed_msg.encoding = 'jpeg'
+            compressed_msg.header = img_msg.header  # Copy the original header
+            compressed_msg.height = 0               # JPEG is compressed, so no height/width
+            compressed_msg.width = 0
+            compressed_msg.encoding = "jpeg"        # Custom encoding for JPEG
+            compressed_msg.is_bigendian = 0
+            compressed_msg.step = len(encoded_img)  # Size of the encoded image
+            compressed_msg.data = encoded_img.tobytes()  # Convert to byte array
 
             # Publish the compressed image
             self.front_right_camera_publisher.publish(compressed_msg)
