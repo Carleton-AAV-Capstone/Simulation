@@ -23,6 +23,7 @@ setup(
         'console_scripts': [
             'compressed_camera = test_nodes.compressed_images:main',      
             'ackermann_control = test_nodes.publish_ackermann_control:main',
+            'emergency_stop = test_nodes.emergency_stop:main',
         ],
     },
 )

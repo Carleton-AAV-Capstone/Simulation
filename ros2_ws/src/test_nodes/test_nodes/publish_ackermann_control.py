@@ -19,10 +19,8 @@ class AckermannControl(Node):
         try:
             # Extract data from EgoVehicleControlInfo
             ackermann_msg = AckermannDrive()
-            ackermann_msg.steering_angle = msg.target.steering_angle
-            ackermann_msg.speed = msg.target.speed
-            ackermann_msg.acceleration = msg.target.accel
-            ackermann_msg.jerk = msg.target.jerk
+            ackermann_msg.speed = msg.current.speed
+            ackermann_msg.acceleration = msg.current.accel
             
             # Publish the AckermannDrive message
             self.ackermann_publisher.publish(ackermann_msg)
