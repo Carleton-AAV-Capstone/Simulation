@@ -19,27 +19,24 @@ class CompressedCamera(Node):
                 10)
         self.get_logger().info("Compressed camera node initialized and ready")
 
-    def publish_compressed_image(self, img_msg):
+    def publish_compressed_image(self, msg):
         try:
             # Convert ROS Image message to OpenCV format
-            cv_img = self.bridge.imgmsg_to_cv2(img_msg, 'bgr8')
+            cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            
+            # Compress the image using JPEG format
+            _, compressed_image = cv2.imencode('.jpg', cv_image, [cv2.IMWRITE_JPEG_QUALITY, 90])
 
-            # Encode the OpenCV image to JPEG
-            success, encoded_img = cv2.imencode('.jpg', cv_img)
-            if not success:
-                self.get_logger().error("Failed to encode image to JPEG format")
-                return
+            # Decode the compressed image back to OpenCV format
+            decompressed_image = cv2.imdecode(compressed_image, cv2.IMREAD_COLOR)
 
-            # Create a new ROS Image message
-            compressed_msg = CompressedImage()
-            compressed_msg.header = img_msg.header  # Copy the original header
-            compressed_msg.encoding = "jpeg"        # Custom encoding for JPEG
-            compressed_msg.data = encoded_img.tobytes()  # Convert to byte array
+            # Convert the decompressed image back to a ROS Image message
+            compressed_msg = self.bridge.cv2_to_imgmsg(decompressed_image, encoding='bgr8')
 
             # Publish the compressed image
             self.front_right_camera_publisher.publish(compressed_msg)
-            self.get_logger().info("Published compressed image successfully")
 
+            self.get_logger().info('Compressed and published an image.')
         except Exception as e:
             self.get_logger().error(f"Error in image compression: {str(e)}")
 
