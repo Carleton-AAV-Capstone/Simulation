@@ -54,12 +54,6 @@ def generate_launch_description():
                 }.items()
             ),
         launch.actions.IncludeLaunchDescription(
-                launch.launch_description_sources.PythonLaunchDescriptionSource(
-                    os.path.join(get_package_share_directory(
-                        'carla_manual_control'), 'carla_manual_control.launch.py')
-                    )
-                ),
-        launch.actions.IncludeLaunchDescription(
             launch.launch_description_sources.PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory(
                     'carla_spawn_objects'), 'carla_spawn_objects.launch.py')
