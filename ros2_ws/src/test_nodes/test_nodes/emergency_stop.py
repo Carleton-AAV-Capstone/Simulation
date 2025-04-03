@@ -23,7 +23,7 @@ class EmergencyStop(Node):
                 ackermann_msg.speed = 1.0
                 ackermann_msg.acceleration = 0.0
                 # Publish the AckermannDrive message
-                self.ackermann_publisher.publish(ackermann_msg)
+                self.ackermann_stop_publisher.publish(ackermann_msg)
                 self.get_logger().info(f"Published AckermannDrive: {ackermann_msg}")
             else:
                 self.get_logger().info("Emergency Stop is NOT ACTIVE")
